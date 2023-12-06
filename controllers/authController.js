@@ -3,7 +3,7 @@ import userModels from "../models/userModels.js";
 export const Auth = async (req, res) => {
   try {
     const user = await userModels.findOne({
-      username: req.body.username,
+      email: req.body.email,
       password: req.body.password,
     });
 
@@ -12,7 +12,12 @@ export const Auth = async (req, res) => {
         .status(404)
         .json({ message: "Username atau Password tidak ditemukan!" });
     }
-    return res.status(200).json({ message: "Berhasil Login!" });
+    const userData = {
+      username: user.username,
+      email: user.email,
+      id: user._id,
+    };
+    return res.status(200).json({ message: "Berhasil Login!", user: userData });
   } catch (error) {
     return res.status(500).json({ message: "Terjadi Kesalahan pada server!" });
   }
