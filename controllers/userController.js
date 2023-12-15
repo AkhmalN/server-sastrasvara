@@ -6,6 +6,8 @@ export const createUser = async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
+      kelas: req.body.kelas,
+      asal_kampus: req.body.asal_kampus,
     });
     await newUser.save();
     if (!newUser) {
@@ -37,10 +39,10 @@ export const getUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, kelas, asal_kampus } = req.body;
     const user = await User.findOneAndUpdate(
       { _id: req.params.id },
-      { username, email, password },
+      { username, email, password, kelas, asal_kampus },
       { new: true }
     );
     if (!user) {
