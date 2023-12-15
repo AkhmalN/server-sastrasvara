@@ -16,6 +16,8 @@ export const Auth = async (req, res) => {
       username: user.username,
       email: user.email,
       id: user._id,
+      kelas: user.kelas,
+      kampus: user.asal_kampus,
     };
     return res.status(200).json({ message: "Berhasil Login!", user: userData });
   } catch (error) {
