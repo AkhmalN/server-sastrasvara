@@ -12,7 +12,7 @@ export const createStory = async (req, res) => {
         .status(404)
         .json({ message: "Terjadi Kesalahan dalam menambah cerita!" });
     }
-    return res.status(200).json({ message: "Cerita Ditambahkan" });
+    res.status(200).json({ message: "Cerita Ditambahkan" });
   } catch (error) {
     return res.status(404).json({ message: "Terjadi kesalahan pada server!" });
   }
@@ -21,7 +21,12 @@ export const createStory = async (req, res) => {
 export const getStories = async (req, res) => {
   try {
     const story = await storyModel.find();
-    return res.status(200).json(story);
+    if (!story) {
+      return res
+        .status(404)
+        .json({ message: "Tidak ada cerita yang ditemukan" });
+    }
+    res.status(200).json(story);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
