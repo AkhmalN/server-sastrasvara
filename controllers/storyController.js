@@ -8,9 +8,11 @@ export const createStory = async (req, res) => {
     });
     await newStory.save();
     if (!newStory) {
-      return res.status(404).json({ message: "Terjadi Kesalahan!" });
+      return res
+        .status(404)
+        .json({ message: "Terjadi Kesalahan dalam menambah cerita!" });
     }
-    return res.status(200).json({ message: "Story Ditambahkan" });
+    return res.status(200).json({ message: "Cerita Ditambahkan" });
   } catch (error) {
     return res.status(404).json({ message: "Terjadi kesalahan pada server!" });
   }

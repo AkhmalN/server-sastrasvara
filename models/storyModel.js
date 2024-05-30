@@ -4,7 +4,6 @@ const Story = mongoose.Schema(
   {
     judul: {
       type: String,
-      required: true,
     },
     image: {
       type: String,
@@ -14,7 +13,6 @@ const Story = mongoose.Schema(
     },
     script: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }
