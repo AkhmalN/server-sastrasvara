@@ -1,10 +1,36 @@
 import storyModel from "../models/storyModel.js";
+import authorize from "../googleAuth.js";
+import uploadFile from "../googleDrive.js";
 
 export const createStory = async (req, res) => {
   try {
+    const { judul, script } = req.body;
+    const files = req.files;
+    const imageFile = files.image ? files.image[0] : null;
+    const audioFile = files.audio ? files.audio[0] : null;
+
+    // Folder Google Drive untuk menyimpan image
+    const imageFolderId = process.env.GOOGLEDRIVE_IMAGE_ID;
+    const audioFolderId = process.env.GOOGLEDRIVE_AUDIO_ID;
+
+    // Mengautentikasi dan mendapatkan klien JWT
+    const authClient = await authorize();
+
+    let imageViewLink = null;
+    let audioViewLink = null;
+
+    if (imageFile) {
+      imageViewLink = await uploadFile(authClient, imageFile, imageFolderId);
+    }
+    if (audioFile) {
+      audioViewLink = await uploadFile(authClient, audioFile, audioFolderId);
+    }
+
     const newStory = new storyModel({
-      judul: req.body.judul,
-      script: req.body.script,
+      judul,
+      script,
+      image: imageViewLink,
+      audio: audioViewLink,
     });
     await newStory.save();
     if (!newStory) {
@@ -12,8 +38,9 @@ export const createStory = async (req, res) => {
         .status(404)
         .json({ message: "Terjadi Kesalahan dalam menambah cerita!" });
     }
-    res.status(200).json({ message: "Cerita Ditambahkan" });
+    res.status(200).json({ message: "Berhasil menambahkan cerita" });
   } catch (error) {
+    console.log(error);
     return res.status(404).json({ message: "Terjadi kesalahan pada server!" });
   }
 };
