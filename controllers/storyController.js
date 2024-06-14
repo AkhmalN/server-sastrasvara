@@ -41,7 +41,7 @@ export const createStory = async (req, res) => {
     res.status(200).json({ message: "Berhasil menambahkan cerita" });
   } catch (error) {
     console.log(error);
-    return res.status(404).json({ message: "Terjadi kesalahan pada server!" });
+    return res.status(500).json({ message: "Terjadi kesalahan pada server!" });
   }
 };
 
